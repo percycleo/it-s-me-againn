@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Little Letter for Mina</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: Georgia, "Times New Roman", serif;
+}
+
+body {
+    background:
+        linear-gradient(
+            to bottom,
+            #dcebd8 0%,
+            #edf1dc 45%,
+            #f7ead7 100%
+        );
+    color: #4b3b38;
+}
+
+/* =========================
+   SCENE
+========================= */
+
+.scene {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* soft sunlight */
+
+.sun {
+    position: absolute;
+    width: 260px;
+    height: 260px;
+    top: -80px;
+    right: 10%;
+    border-radius: 50%;
+    background: rgba(255, 244, 193, 0.55);
+    filter: blur(8px);
+}
+
+/* distant hills */
+
+.hill {
+    position: absolute;
+    bottom: 18%;
+    width: 120%;
+    height: 35%;
+    border-radius: 50% 50% 0 0;
+    background: #b8cda8;
+    left: -10%;
+}
+
+.hill.back {
+    bottom: 25%;
+    background: #cadab9;
+    transform: scale(1.15);
+}
+
+/* grass */
+
+.grass {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 24%;
+    background: linear-gradient(
+        to top,
+        #91aa78,
+        #b4c998
+    );
+}
+
+/* =========================
+   FLOWERS
+========================= */
+
+.flower {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #fff8e9;
+    box-shadow:
+        0 -7px 0 #fff8e9,
+        7px 0 0 #fff8e9,
+        0 7px 0 #fff8e9,
+        -7px 0 0 #fff8e9;
+    opacity: 0.9;
+}
+
+.flower::after {
+    content: "";
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    left: 3.5px;
+    top: 3.5px;
+    border-radius: 50%;
+    background: #e7b76d;
+}
+
+.f1 {
+    left: 8%;
+    bottom: 13%;
+}
+
+.f2 {
+    left: 17%;
+    bottom: 9%;
+    transform: scale(.7);
+}
+
+.f3 {
+    left: 85%;
+    bottom: 14%;
+    transform: scale(.8);
+}
+
+.f4 {
+    left: 92%;
+    bottom: 8%;
+    transform: scale(.65);
+}
+
+/* =========================
+   FLOATING PETALS
+========================= */
+
+.petal {
+    position: absolute;
+    width: 8px;
+    height: 14px;
+    border-radius: 70% 30% 70% 30%;
+    background: rgba(255, 242, 225, .8);
+    animation: drift linear infinite;
+}
+
+.petal:nth-child(1) {
+    left: 15%;
+    top: 15%;
+    animation-duration: 14s;
+}
+
+.petal:nth-child(2) {
+    left: 35%;
+    top: 5%;
+    animation-duration: 18s;
+    animation-delay: -5s;
+}
+
+.petal:nth-child(3) {
+    left: 70%;
+    top: 12%;
+    animation-duration: 16s;
+    animation-delay: -8s;
+}
+
+.petal:nth-child(4) {
+    left: 82%;
+    top: 30%;
+    animation-duration: 20s;
+    animation-delay: -11s;
+}
+
+@keyframes drift {
+    0% {
+        transform:
+            translate(0, 0)
+            rotate(0deg);
+        opacity: 0;
+    }
+
+    15% {
+        opacity: .8;
+    }
+
+    50% {
+        transform:
+            translate(60px, 150px)
+            rotate(180deg);
+    }
+
+    100% {
+        transform:
+            translate(-30px, 340px)
+            rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* =========================
+   ENVELOPE AREA
+========================= */
+
+.center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    z-index: 10;
+}
+
+.envelope-wrapper {
+    position: relative;
+    width: min(520px, 88vw);
+    height: 330px;
+    perspective: 1200px;
+    transition:
+        transform .8s ease,
+        opacity .8s ease;
+}
+
+/* =========================
+   ENVELOPE
+========================= */
+
+.envelope {
+    position: absolute;
+    inset: 0;
+    border-radius: 5px;
+    background:
+        linear-gradient(
+            135deg,
+            #f6e8ce,
+            #ead7b9
+        );
+    box-shadow:
+        0 20px 45px rgba(75, 59, 56, .22),
+        0 4px 10px rgba(75, 59, 56, .12);
+    overflow: visible;
+}
+
+/* envelope paper texture */
+
+.envelope::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: .18;
+    background:
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 3px,
+            rgba(120, 90, 60, .06) 4px
+        );
+}
+
+/* =========================
+   ENVELOPE FLAP
+========================= */
+
+.flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 55%;
+    transform-origin: top center;
+    background:
+        linear-gradient(
+            135deg,
+            #f4e4c9,
+            #e5cfad
+        );
+    clip-path: polygon(
+        0 0,
+        100% 0,
+        50% 100%
+    );
+    z-index: 5;
+    transition:
+        transform 1.1s cubic-bezier(.2,.75,.2,1);
+}
+
+/* =========================
+   LETTER INSIDE
+========================= */
+
+.letter {
+    position: absolute;
+    left: 7%;
+    right: 7%;
+    bottom: 4%;
+    height: 88%;
+    background:
+        linear-gradient(
+            to bottom,
+            #fffdf7,
+            #f9f1df
+        );
+    border-radius: 3px;
+    box-shadow:
+        0 8px 20px rgba(70, 50, 40, .18);
+    padding: 35px 35px;
+    overflow-y: auto;
+    opacity: 0;
+    transform: translateY(45%);
+    z-index: 2;
+    transition:
+        transform 1.1s cubic-bezier(.2,.75,.2,1),
+        opacity .7s ease;
+}
+
+/* scrollbar */
+
+.letter::-webkit-scrollbar {
+    width: 6px;
+}
+
+.letter::-webkit-scrollbar-thumb {
+    background: #cdbb9d;
+    border-radius: 20px;
+}
+
+/* letter typography */
+
+.letter p {
+    margin: 0 0 18px;
+    font-size: 17px;
+    line-height: 1.5;
+    text-align: justify;
+}
+
+.letter .greeting {
+    text-align: left;
+    font-size: 20px;
+    margin-bottom: 24px;
+}
+
+.letter .ending {
+    text-align: left;
+    margin-top: 30px;
+}
+
+/* =========================
+   STAMP
+========================= */
+
+.stamp {
+    position: absolute;
+    right: 28px;
+    top: 22px;
+    width: 62px;
+    height: 74px;
+    border: 2px dashed rgba(110, 82, 58, .45);
+    background: #ead6bc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 1px;
+    transform: rotate(4deg);
+    z-index: 4;
+}
+
+/* =========================
+   ADDRESS
+========================= */
+
+.address {
+    position: absolute;
+    left: 38px;
+    top: 36px;
+    font-size: 15px;
+    letter-spacing: 3px;
+    color: #70594c;
+    z-index: 4;
+}
+
+.address strong {
+    display: block;
+    font-size: 25px;
+    letter-spacing: 5px;
+    margin-top: 5px;
+}
+
+/* =========================
+   POSTMARK
+========================= */
+
+.postmark {
+    position: absolute;
+    right: 100px;
+    bottom: 34px;
+    width: 75px;
+    height: 75px;
+    border: 2px solid rgba(100, 75, 55, .35);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 8px;
+    letter-spacing: 1px;
+    color: rgba(100, 75, 55, .6);
+    transform: rotate(-12deg);
+    z-index: 4;
+}
+
+/* =========================
+   WAX SEAL
+========================= */
+
+.seal {
+    position: absolute;
+    left: 50%;
+    top: 53%;
+    transform:
+        translate(-50%, -50%);
+    width: 82px;
+    height: 82px;
+    border-radius: 50%;
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #c86b62,
+            #9e443f 55%,
+            #71302e
+        );
+    box-shadow:
+        inset 0 5px 7px rgba(255,255,255,.2),
+        inset 0 -8px 10px rgba(0,0,0,.18),
+        0 7px 13px rgba(70,40,35,.25);
+    z-index: 20;
+    cursor: pointer;
+    transition:
+        transform .35s ease,
+        box-shadow .35s ease;
+}
+
+.seal:hover {
+    transform:
+        translate(-50%, -50%)
+        scale(1.06);
+}
+
+.seal::before {
+    content: "♥";
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,240,230,.85);
+    font-size: 25px;
+    text-shadow:
+        0 1px 2px rgba(60,20,20,.4);
+}
+
+.seal-text {
+    position: absolute;
+    bottom: -29px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 150px;
+    text-align: center;
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: #765e52;
+    white-space: nowrap;
+}
+
+/* =========================
+   OPEN ANIMATION
+========================= */
+
+.scene.opening .flap {
+    transform: rotateX(180deg);
+}
+
+.scene.opening .letter {
+    opacity: 1;
+    transform: translateY(-3%);
+    transition-delay: .35s;
+}
+
+.scene.opening .seal {
+    opacity: 0;
+    transform:
+        translate(-50%, -50%)
+        scale(.6);
+    pointer-events: none;
+    transition:
+        opacity .35s ease,
+        transform .35s ease;
+}
+
+.scene.opening .envelope-wrapper {
+    transform: translateY(7%);
+}
+
+/* =========================
+   FULL LETTER MODE
+========================= */
+
+.scene.open .envelope {
+    background: transparent;
+    box-shadow: none;
+}
+
+.scene.open .envelope::after,
+.scene.open .flap,
+.scene.open .stamp,
+.scene.open .address,
+.scene.open .postmark {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.scene.open .letter {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    right: auto;
+    bottom: auto;
+    width: min(720px, 90vw);
+    height: min(78vh, 720px);
+    transform:
+        translate(-50%, -50%);
+    opacity: 1;
+    z-index: 50;
+    padding: 48px clamp(25px, 6vw, 65px);
+    border-radius: 5px;
+    box-shadow:
+        0 25px 70px rgba(60, 45, 35, .28);
+}
+
+.scene.open .envelope-wrapper {
+    transform: none;
+}
+
+/* =========================
+   CLOSE BUTTON
+========================= */
+
+.close-button {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    z-index: 100;
+    border: 0;
+    background: rgba(255,255,255,.6);
+    backdrop-filter: blur(8px);
+    color: #624f48;
+    padding: 10px 16px;
+    border-radius: 30px;
+    font-family: Georgia, serif;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: .3s ease;
+}
+
+.scene.open .close-button {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* =========================
+   SOUND BUTTON
+========================= */
+
+.sound-button {
+    position: fixed;
+    top: 22px;
+    left: 22px;
+    z-index: 110;
+    border: 0;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.55);
+    backdrop-filter: blur(8px);
+    color: #66524a;
+    font-size: 17px;
+    cursor: pointer;
+    box-shadow:
+        0 4px 12px rgba(70,50,40,.1);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 600px) {
+
+    .envelope-wrapper {
+        height: 250px;
+    }
+
+    .letter {
+        padding: 25px 22px;
+    }
+
+    .letter p {
+        font-size: 15px;
+    }
+
+    .letter .greeting {
+        font-size: 18px;
+    }
+
+    .stamp {
+        transform: scale(.75) rotate(4deg);
+        transform-origin: top right;
+    }
+
+    .address {
+        left: 22px;
+        top: 28px;
+    }
+
+    .address strong {
+        font-size: 20px;
+    }
+
+    .seal {
+        width: 70px;
+        height: 70px;
+    }
+}
+
+/* =========================
+   REDUCED MOTION
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="scene" id="scene">
+
+    <div class="sun"></div>
+
+    <div class="hill back"></div>
+    <div class="hill"></div>
+    <div class="grass"></div>
+
+    <div class="flower f1"></div>
+    <div class="flower f2"></div>
+    <div class="flower f3"></div>
+    <div class="flower f4"></div>
+
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+
+    <!-- SOUND BUTTON -->
+    <button
+        class="sound-button"
+        id="soundToggle"
+        aria-label="Toggle sound">
+        🔊
+    </button>
+
+    <!-- CLOSE BUTTON -->
+    <button
+        class="close-button"
+        id="closeButton">
+        Close letter
+    </button>
+
+    <!-- ENVELOPE -->
+    <div class="center">
+
+        <div class="envelope-wrapper">
+
+            <div class="envelope">
+
+                <div class="letter" id="letter">
+
+                    <p class="greeting">
+                        Hi, Mina!
+                    </p>
+
+                    <p>
+                        I guess napagawa na naman ako ng letter. HAHAHA.
+                        Happy Wednesday, btw! I made this para may konting
+                        motivation ka bukas. Bait ko noh? 😌
+                    </p>
+
+                    <p>
+                        Anyway, gusto ko sana 'to sabihin sa'yo pag nasa call
+                        tayo, pero knowing me, baka maubusan ako ng lakas ng
+                        loob or bigla na lang akong tumawa HAHAHA.
+                        So dito ko na lang sasabihin.
+                    </p>
+
+                    <p>
+                        I don't really know how to word it without making this
+                        sound super serious, pero I just want you to know na...
+                        I really admire you.
+                    </p>
+
+                    <p>
+                        Like, genuinely.
+                    </p>
+
+                    <p>
+                        I admire how hard you work, kahit minsan halatang
+                        pagod ka na, and somehow you still manage to make
+                        things feel a little lighter!
+                    </p>
+
+                    <p>
+                        Kahit nung nag-trauma dump ka sa'kin HAHAHAHA,
+                        you still trusted me enough to actually tell me
+                        those things kahit sinabi mo pa na,
+                        "bala na kung nagkalat" 😭
+                    </p>
+
+                    <p>
+                        Sira talaga 'to si Mina eh HAHAHA.
+                    </p>
+
+                    <p>
+                        But seriously, I appreciate that.
+                        Ahh, nakakatuwa ka rin pakinggan minsan.
+                    </p>
+
+                    <p>
+                        And I guess habang tumatagal, may mga little things
+                        about you na napapansin ko more than I probably should.
+                        I don't know...
+                    </p>
+
+                    <p>
+                        Maybe that's why I wanted to make this.
+                    </p>
+
+                    <p>
+                        Hindi naman ako trying to make this super deep or
+                        anything. I just wanted you to know that there's
+                        someone here who notices how hard you're trying.
+                    </p>
+
+                    <p>
+                        So please, kahit sobrang busy mo, remember to rest din,
+                        okay? Or else lilipad ako diyan HAHAHA. EME.
+                        Sino ba ako tiba? Wala pa naman akong karapatan HAHAHA.
+                    </p>
+
+                    <p>
+                        Anyway...
+                    </p>
+
+                    <p>
+                        Happy 50th streak day? 😭
+                    </p>
+
+                    <p class="ending">
+                        I'm glad I got to know you. 🤍
+                    </p>
+
+                </div>
+
+                <!-- FLAP -->
+                <div class="flap"></div>
+
+                <!-- ADDRESS -->
+                <div class="address">
+                    TO
+                    <strong>MINA</strong>
+                </div>
+
+                <!-- STAMP -->
+                <div class="stamp">
+                    SPECIAL<br>
+                    DELIVERY
+                </div>
+
+                <!-- POSTMARK -->
+                <div class="postmark">
+                    WED<br>
+                    50<br>
+                    STREAK
+                </div>
+
+                <!-- WAX SEAL -->
+                <div
+                    class="seal"
+                    id="seal"
+                    aria-label="Open letter"
+                    role="button"
+                    tabindex="0">
+
+                    <div class="seal-text">
+                        tap to open
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+/* =========================================================
+   LETTER INTERACTION
+========================================================= */
+
+const scene = document.getElementById("scene");
+const seal = document.getElementById("seal");
+const closeButton = document.getElementById("closeButton");
+
+let opened = false;
+
+
+/* =========================================================
+   WEB AUDIO AMBIENCE
+========================================================= */
+
+let audioContext = null;
+let masterGain = null;
+
+let windGain = null;
+let windSource = null;
+
+let birdTimer = null;
+
+let soundEnabled = true;
+
+let windLfo = null;
+let windLfoGain = null;
+
+
+/* ---------------------------------------------------------
+   CREATE NOISE BUFFER
+--------------------------------------------------------- */
+
+function createNoiseBuffer() {
+
+    const bufferSize =
+        audioContext.sampleRate * 2;
+
+    const buffer =
+        audioContext.createBuffer(
+            1,
+            bufferSize,
+            audioContext.sampleRate
+        );
+
+    const data =
+        buffer.getChannelData(0);
+
+    for (let i = 0; i < bufferSize; i++) {
+
+        data[i] =
+            Math.random() * 2 - 1;
+
+    }
+
+    return buffer;
+}
+
+
+/* ---------------------------------------------------------
+   START AMBIENCE
+--------------------------------------------------------- */
+
+function startAmbience() {
+
+    if (audioContext) return;
+
+    audioContext =
+        new (
+            window.AudioContext ||
+            window.webkitAudioContext
+        )();
+
+    masterGain =
+        audioContext.createGain();
+
+    masterGain.gain.value =
+        soundEnabled ? 1 : 0;
+
+    masterGain.connect(
+        audioContext.destination
+    );
+
+
+    /* =========================
+       WIND
+    ========================= */
+
+    windSource =
+        audioContext.createBufferSource();
+
+    windSource.buffer =
+        createNoiseBuffer();
+
+    windSource.loop = true;
+
+
+    const windFilter =
+        audioContext.createBiquadFilter();
+
+    windFilter.type = "lowpass";
+
+    windFilter.frequency.value =
+        700;
+
+
+    windGain =
+        audioContext.createGain();
+
+    /*
+        Louder wind
+    */
+    windGain.gain.value =
+        0.032;
+
+
+    /* wind movement */
+
+    windLfo =
+        audioContext.createOscillator();
+
+    windLfoGain =
+        audioContext.createGain();
+
+    windLfo.frequency.value =
+        0.055;
+
+    /*
+        Louder wind movement
+    */
+    windLfoGain.gain.value =
+        0.020;
+
+
+    windLfo
+        .connect(windLfoGain)
+        .connect(windGain.gain);
+
+    windLfo.start();
+
+
+    windSource
+        .connect(windFilter)
+        .connect(windGain)
+        .connect(masterGain);
+
+    windSource.start();
+
+
+    /* =========================
+       BIRDS
+    ========================= */
+
+    scheduleBird();
+
+}
+
+
+/* ---------------------------------------------------------
+   BIRD CHIRP
+--------------------------------------------------------- */
+
+function birdChirp() {
+
+    if (!audioContext || !soundEnabled)
+        return;
+
+
+    const now =
+        audioContext.currentTime;
+
+
+    const oscillator =
+        audioContext.createOscillator();
+
+    const gain =
+        audioContext.createGain();
+
+
+    oscillator.type = "sine";
+
+
+    const baseFrequency =
+        1800 + Math.random() * 900;
+
+
+    oscillator.frequency.setValueAtTime(
+        baseFrequency,
+        now
+    );
+
+    oscillator.frequency.exponentialRampToValueAtTime(
+        baseFrequency * 1.35,
+        now + 0.08
+    );
+
+    oscillator.frequency.exponentialRampToValueAtTime(
+        baseFrequency * 0.85,
+        now + 0.18
+    );
+
+
+    /*
+        Louder bird chirps
+    */
+
+    gain.gain.setValueAtTime(
+        0.0001,
+        now
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        0.045 + Math.random() * 0.025,
+        now + 0.025
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        0.0001,
+        now + 0.22
+    );
+
+
+    oscillator
+        .connect(gain)
+        .connect(masterGain);
+
+
+    oscillator.start(now);
+
+    oscillator.stop(
+        now + 0.25
+    );
+
+}
+
+
+/* ---------------------------------------------------------
+   RANDOM BIRD SCHEDULE
+--------------------------------------------------------- */
+
+function scheduleBird() {
+
+    clearTimeout(birdTimer);
+
+    if (!soundEnabled)
+        return;
+
+
+    const delay =
+        3500 +
+        Math.random() * 9000;
+
+
+    birdTimer =
+        setTimeout(() => {
+
+            birdChirp();
+
+            if (Math.random() > 0.45) {
+
+                setTimeout(
+                    birdChirp,
+                    180 + Math.random() * 250
+                );
+
+            }
+
+            scheduleBird();
+
+        }, delay);
+
+}
+
+
+/* ---------------------------------------------------------
+   SOUND ON / OFF
+--------------------------------------------------------- */
+
+function setSoundEnabled(enabled) {
+
+    soundEnabled = enabled;
+
+
+    if (!audioContext)
+        return;
+
+
+    const now =
+        audioContext.currentTime;
+
+
+    masterGain.gain.cancelScheduledValues(now);
+
+    masterGain.gain.setTargetAtTime(
+        enabled ? 1 : 0,
+        now,
+        0.08
+    );
+
+
+    if (enabled) {
+
+        scheduleBird();
+
+    } else {
+
+        clearTimeout(birdTimer);
+
+    }
+
+}
+
+
+/* =========================================================
+   OPEN LETTER
+========================================================= */
+
+function openLetter() {
+
+    if (opened)
+        return;
+
+
+    opened = true;
+
+
+    /* start sound after user interaction */
+
+    startAmbience();
+
+
+    if (
+        audioContext &&
+        audioContext.state === "suspended"
+    ) {
+
+        audioContext.resume();
+
+    }
+
+
+    scene.classList.add("opening");
+
+
+    setTimeout(() => {
+
+        scene.classList.add("open");
+
+    }, 1100);
+
+}
+
+
+/* =========================================================
+   CLOSE LETTER
+========================================================= */
+
+function closeLetter() {
+
+    if (!opened)
+        return;
+
+
+    opened = false;
+
+
+    scene.classList.remove("open");
+
+
+    setTimeout(() => {
+
+        scene.classList.remove("opening");
+
+    }, 100);
+
+}
+
+
+/* =========================================================
+   EVENTS
+========================================================= */
+
+seal.addEventListener(
+    "click",
+    openLetter
+);
+
+
+seal.addEventListener(
+    "keydown",
+    (event) => {
+
+        if (
+            event.key === "Enter" ||
+            event.key === " "
+        ) {
+
+            event.preventDefault();
+
+            openLetter();
+
+        }
+
+    }
+);
+
+
+closeButton.addEventListener(
+    "click",
+    closeLetter
+);
+
+
+/* =========================================================
+   SOUND TOGGLE
+========================================================= */
+
+const soundToggle =
+    document.getElementById("soundToggle");
+
+
+soundToggle.addEventListener(
+    "click",
+    () => {
+
+        if (!audioContext)
+            startAmbience();
+
+
+        setSoundEnabled(
+            !soundEnabled
+        );
+
+
+        soundToggle.textContent =
+            soundEnabled
+                ? "🔊"
+                : "🔇";
+
+    }
+);
+
+</script>
+
+</body>
+</html>
