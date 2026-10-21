@@ -1,0 +1,516 @@
+```html
+<script>
+
+const world = document.getElementById("world");
+const seal = document.getElementById("seal");
+const reset = document.getElementById("reset");
+
+let opened = false;
+
+
+/* =========================================================
+   AMBIENT SOUND SYSTEM
+========================================================= */
+
+let audioCtx = null;
+let masterGain = null;
+let windGain = null;
+let windSource = null;
+let birdTimer = null;
+let soundEnabled = true;
+
+
+/* =========================================================
+   CREATE SOUND TOGGLE
+========================================================= */
+
+const soundButton = document.createElement("button");
+
+soundButton.innerHTML = "🔊";
+soundButton.setAttribute("aria-label", "Mute sounds");
+
+Object.assign(soundButton.style, {
+    position: "fixed",
+    right: "22px",
+    top: "20px",
+    zIndex: "200",
+    width: "40px",
+    height: "40px",
+    border: "0",
+    borderRadius: "50%",
+    background: "rgba(255,250,239,.65)",
+    backdropFilter: "blur(6px)",
+    color: "#536254",
+    fontSize: "17px",
+    cursor: "pointer",
+    boxShadow: "0 4px 12px rgba(60,70,55,.08)",
+    transition: "transform .2s ease, background .2s ease"
+});
+
+document.body.appendChild(soundButton);
+
+
+/* =========================================================
+   INITIALIZE AUDIO
+========================================================= */
+
+function startAmbience() {
+
+    if (!audioCtx) {
+
+        const AudioContext =
+            window.AudioContext ||
+            window.webkitAudioContext;
+
+        if (!AudioContext) {
+            console.log("Web Audio API not supported.");
+            return;
+        }
+
+        audioCtx = new AudioContext();
+
+        masterGain = audioCtx.createGain();
+
+        masterGain.gain.value =
+            soundEnabled ? 1 : 0;
+
+        masterGain.connect(audioCtx.destination);
+
+        createWind();
+    }
+
+    if (audioCtx.state === "suspended") {
+        audioCtx.resume();
+    }
+
+    scheduleBird();
+}
+
+
+/* =========================================================
+   WIND
+========================================================= */
+
+function createWind() {
+
+    /*
+        Create soft filtered noise.
+        This is intentionally VERY quiet.
+    */
+
+    const bufferSize =
+        audioCtx.sampleRate * 3;
+
+    const buffer =
+        audioCtx.createBuffer(
+            1,
+            bufferSize,
+            audioCtx.sampleRate
+        );
+
+    const data =
+        buffer.getChannelData(0);
+
+    for (let i = 0; i < bufferSize; i++) {
+
+        /*
+            Random noise with smoothing.
+            Makes it less harsh than pure static.
+        */
+
+        data[i] =
+            (Math.random() * 2 - 1) *
+            0.45;
+    }
+
+    windSource =
+        audioCtx.createBufferSource();
+
+    windSource.buffer = buffer;
+    windSource.loop = true;
+
+
+    const lowpass =
+        audioCtx.createBiquadFilter();
+
+    lowpass.type = "lowpass";
+    lowpass.frequency.value = 650;
+    lowpass.Q.value = 0.3;
+
+
+    windGain =
+        audioCtx.createGain();
+
+    /*
+        Very subtle.
+    */
+
+    windGain.gain.value = 0.035;
+
+
+    windSource
+        .connect(lowpass)
+        .connect(windGain)
+        .connect(masterGain);
+
+
+    windSource.start();
+
+
+    /*
+        Slowly change the wind volume
+        so it feels like an actual breeze.
+    */
+
+    const breeze = () => {
+
+        if (!audioCtx || !windGain) {
+            return;
+        }
+
+        const now =
+            audioCtx.currentTime;
+
+        const strength =
+            0.025 +
+            Math.random() * 0.025;
+
+        windGain.gain.cancelScheduledValues(now);
+
+        windGain.gain.linearRampToValueAtTime(
+            strength,
+            now + 2 + Math.random() * 3
+        );
+
+        setTimeout(
+            breeze,
+            3500 + Math.random() * 4000
+        );
+    };
+
+    breeze();
+}
+
+
+/* =========================================================
+   BIRD CHIRP
+========================================================= */
+
+function birdChirp() {
+
+    if (
+        !audioCtx ||
+        !soundEnabled ||
+        audioCtx.state !== "running"
+    ) {
+        return;
+    }
+
+
+    const now =
+        audioCtx.currentTime;
+
+
+    /*
+        Randomize the bird so it doesn't
+        sound exactly the same every time.
+    */
+
+    const startFreq =
+        1500 +
+        Math.random() * 700;
+
+    const endFreq =
+        2400 +
+        Math.random() * 1000;
+
+
+    const oscillator =
+        audioCtx.createOscillator();
+
+    const gain =
+        audioCtx.createGain();
+
+
+    oscillator.type = "sine";
+
+
+    /*
+        Frequency sweep:
+        high → higher → lower
+    */
+
+    oscillator.frequency.setValueAtTime(
+        startFreq,
+        now
+    );
+
+    oscillator.frequency.exponentialRampToValueAtTime(
+        endFreq,
+        now + 0.12
+    );
+
+    oscillator.frequency.exponentialRampToValueAtTime(
+        startFreq * 0.85,
+        now + 0.25
+    );
+
+
+    /*
+        Very short natural envelope.
+    */
+
+    gain.gain.setValueAtTime(
+        0,
+        now
+    );
+
+    gain.gain.linearRampToValueAtTime(
+        0.045,
+        now + 0.025
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        0.001,
+        now + 0.3
+    );
+
+
+    oscillator
+        .connect(gain)
+        .connect(masterGain);
+
+
+    oscillator.start(now);
+
+    oscillator.stop(
+        now + 0.32
+    );
+
+
+    /*
+        Sometimes make a second chirp,
+        like a little bird answering.
+    */
+
+    if (Math.random() > 0.58) {
+
+        setTimeout(() => {
+
+            if (
+                audioCtx &&
+                soundEnabled
+            ) {
+                birdChirp();
+            }
+
+        }, 180 + Math.random() * 180);
+    }
+}
+
+
+/* =========================================================
+   RANDOM BIRD SCHEDULER
+========================================================= */
+
+function scheduleBird() {
+
+    clearTimeout(birdTimer);
+
+    /*
+        Wait between 5 and 13 seconds.
+    */
+
+    const delay =
+        5000 +
+        Math.random() * 8000;
+
+
+    birdTimer = setTimeout(() => {
+
+        birdChirp();
+
+        scheduleBird();
+
+    }, delay);
+}
+
+
+/* =========================================================
+   SOUND TOGGLE
+========================================================= */
+
+soundButton.addEventListener("click", (event) => {
+
+    event.stopPropagation();
+
+    soundEnabled =
+        !soundEnabled;
+
+
+    soundButton.innerHTML =
+        soundEnabled
+            ? "🔊"
+            : "🔇";
+
+    soundButton.setAttribute(
+        "aria-label",
+        soundEnabled
+            ? "Mute sounds"
+            : "Turn sounds on"
+    );
+
+
+    if (
+        audioCtx &&
+        masterGain
+    ) {
+
+        const now =
+            audioCtx.currentTime;
+
+
+        masterGain.gain.cancelScheduledValues(now);
+
+        masterGain.gain.linearRampToValueAtTime(
+            soundEnabled ? 1 : 0,
+            now + 0.35
+        );
+
+
+        if (soundEnabled) {
+            scheduleBird();
+        } else {
+            clearTimeout(birdTimer);
+        }
+    }
+
+});
+
+
+/* =========================================================
+   OPEN LETTER
+========================================================= */
+
+function openLetter() {
+
+    if (opened) return;
+
+    opened = true;
+
+
+    /*
+        Start ambience directly from the
+        user's seal click.
+
+        This also avoids most browser
+        autoplay restrictions.
+    */
+
+    startAmbience();
+
+
+    /*
+        PHASE 1
+        Break wax seal.
+    */
+
+    world.classList.add("breaking");
+
+
+    /*
+        PHASE 2
+        Open envelope flap.
+    */
+
+    setTimeout(() => {
+
+        world.classList.add("opening");
+
+    }, 350);
+
+
+    /*
+        PHASE 3
+        Letter rises out.
+    */
+
+    setTimeout(() => {
+
+        world.classList.add("opened");
+
+    }, 1250);
+
+}
+
+
+/* =========================================================
+   CLICK
+========================================================= */
+
+seal.addEventListener(
+    "click",
+    openLetter
+);
+
+
+/* =========================================================
+   KEYBOARD
+========================================================= */
+
+seal.addEventListener(
+    "keydown",
+    (event) => {
+
+        if (
+            event.key === "Enter" ||
+            event.key === " "
+        ) {
+
+            event.preventDefault();
+
+            openLetter();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+reset.addEventListener(
+    "click",
+    () => {
+
+        opened = false;
+
+
+        world.classList.remove(
+            "breaking",
+            "opening",
+            "opened"
+        );
+
+
+        /*
+            Keep ambience running quietly
+            if the user closes the letter.
+        */
+
+        if (
+            audioCtx &&
+            audioCtx.state === "suspended"
+        ) {
+
+            audioCtx.resume();
+
+        }
+
+    }
+);
+
+</script>
+```
