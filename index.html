@@ -1,0 +1,2017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Little Letter for Mina</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@400;500;600&display=swap');
+
+:root {
+    --sky: #dce9df;
+    --sky-dark: #b9d0c2;
+    --paper: #fffaf0;
+    --paper-shadow: rgba(50, 48, 37, .24);
+    --ink: #4b4137;
+    --muted: #756b60;
+    --wax: #9b4d46;
+    --wax-dark: #713934;
+    --green: #58725c;
+    --cream: #f6eedc;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    overflow: hidden;
+    background: var(--sky);
+    color: var(--ink);
+    font-family: "DM Sans", sans-serif;
+}
+
+/* =========================================================
+   WORLD
+========================================================= */
+
+.world {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 620px;
+    overflow: hidden;
+    isolation: isolate;
+    background:
+        radial-gradient(circle at 50% 42%, rgba(255,255,255,.55), transparent 34%),
+        linear-gradient(
+            180deg,
+            #dfece3 0%,
+            #d8e7dc 45%,
+            #c7daca 100%
+        );
+}
+
+/* soft paper texture */
+.world::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    pointer-events: none;
+    opacity: .12;
+    background-image:
+        radial-gradient(rgba(60,50,40,.5) .5px, transparent .5px);
+    background-size: 5px 5px;
+    mix-blend-mode: multiply;
+}
+
+/* vignette */
+.vignette {
+    position: absolute;
+    inset: 0;
+    z-index: 19;
+    pointer-events: none;
+    background:
+        radial-gradient(
+            ellipse at center,
+            transparent 45%,
+            rgba(50,65,52,.13) 100%
+        );
+}
+
+/* =========================================================
+   LITTLE FLOWER WORLD
+========================================================= */
+
+.garden {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.hill {
+    position: absolute;
+    left: -10%;
+    width: 120%;
+    height: 31%;
+    bottom: -16%;
+    border-radius: 50% 50% 0 0;
+    background: #abc5ad;
+}
+
+.hill.back {
+    bottom: -20%;
+    opacity: .5;
+    transform: scale(1.15);
+}
+
+.grass {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 19%;
+    background:
+        linear-gradient(
+            170deg,
+            transparent 0 25%,
+            rgba(79,110,84,.15) 25% 26%,
+            transparent 26% 100%
+        ),
+        #9dbb9f;
+}
+
+/* flowers */
+
+.flower {
+    position: absolute;
+    width: 70px;
+    height: 120px;
+    transform-origin: bottom center;
+    animation: sway 5s ease-in-out infinite;
+}
+
+.flower .stem {
+    position: absolute;
+    width: 4px;
+    height: 85px;
+    left: 33px;
+    top: 30px;
+    border-radius: 10px;
+    background: #638267;
+    transform: rotate(3deg);
+}
+
+.flower .leaf {
+    position: absolute;
+    width: 27px;
+    height: 12px;
+    background: #638267;
+    border-radius: 100% 0 100% 0;
+}
+
+.flower .leaf.one {
+    left: 10px;
+    top: 73px;
+    transform: rotate(22deg);
+}
+
+.flower .leaf.two {
+    left: 36px;
+    top: 91px;
+    transform: rotate(155deg);
+}
+
+.flower .head {
+    position: absolute;
+    width: 46px;
+    height: 46px;
+    left: 10px;
+    top: 0;
+}
+
+.petal {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    border-radius: 70% 45% 70% 45%;
+    background: #f4c9c3;
+}
+
+.petal.p1 {
+    left: 10px;
+    top: 0;
+}
+
+.petal.p2 {
+    left: 21px;
+    top: 10px;
+    transform: rotate(90deg);
+}
+
+.petal.p3 {
+    left: 10px;
+    top: 20px;
+    transform: rotate(180deg);
+}
+
+.petal.p4 {
+    left: 0;
+    top: 10px;
+    transform: rotate(270deg);
+}
+
+.flower .center {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    left: 16px;
+    top: 16px;
+    border-radius: 50%;
+    background: #d39a52;
+    z-index: 2;
+}
+
+.f1 {
+    left: 3%;
+    bottom: 3%;
+    transform: scale(.9);
+}
+
+.f2 {
+    left: 12%;
+    bottom: -1%;
+    transform: scale(1.15);
+    animation-delay: -2s;
+}
+
+.f3 {
+    right: 5%;
+    bottom: 1%;
+    transform: scale(1.05);
+    animation-delay: -1s;
+}
+
+.f4 {
+    right: 15%;
+    bottom: -3%;
+    transform: scale(.78);
+    animation-delay: -3s;
+}
+
+.f5 {
+    left: 22%;
+    bottom: -5%;
+    transform: scale(.65);
+    animation-delay: -4s;
+}
+
+.f6 {
+    right: 27%;
+    bottom: -5%;
+    transform: scale(.72);
+    animation-delay: -1.5s;
+}
+
+@keyframes sway {
+    0%, 100% {
+        rotate: -1deg;
+    }
+
+    50% {
+        rotate: 2deg;
+    }
+}
+
+/* tiny floating petals */
+
+.petal-float {
+    position: absolute;
+    width: 9px;
+    height: 14px;
+    border-radius: 80% 20% 80% 20%;
+    background: #e8b9b3;
+    opacity: .55;
+    animation: floatPetal 9s linear infinite;
+}
+
+.pf1 {
+    left: 18%;
+    top: 15%;
+    animation-delay: -2s;
+}
+
+.pf2 {
+    left: 76%;
+    top: 23%;
+    animation-delay: -5s;
+}
+
+.pf3 {
+    left: 83%;
+    top: 55%;
+    animation-delay: -7s;
+}
+
+.pf4 {
+    left: 10%;
+    top: 47%;
+    animation-delay: -1s;
+}
+
+@keyframes floatPetal {
+    0% {
+        transform: translate3d(0,0,0) rotate(0deg);
+        opacity: 0;
+    }
+
+    15% {
+        opacity: .55;
+    }
+
+    85% {
+        opacity: .45;
+    }
+
+    100% {
+        transform: translate3d(70px, 180px, 0) rotate(230deg);
+        opacity: 0;
+    }
+}
+
+/* =========================================================
+   INTRO
+========================================================= */
+
+.intro {
+    position: absolute;
+    z-index: 4;
+    top: 7%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    transition:
+        opacity .7s ease,
+        transform .7s ease;
+}
+
+.intro-small {
+    font-size: 11px;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    color: #647367;
+    margin-bottom: 9px;
+}
+
+.intro-title {
+    font-family: "Playfair Display", serif;
+    font-size: clamp(22px, 4vw, 34px);
+    color: #465b4b;
+}
+
+.world.opened .intro {
+    opacity: 0;
+    transform: translate(-50%, -20px);
+}
+
+/* =========================================================
+   ENVELOPE STAGE
+========================================================= */
+
+.stage {
+    position: absolute;
+    z-index: 10;
+    left: 50%;
+    top: 52%;
+    width: min(600px, 88vw);
+    height: min(430px, 63vh);
+    transform: translate(-50%, -50%);
+    transition:
+        transform 1.4s cubic-bezier(.22,.8,.25,1),
+        opacity 1s ease;
+}
+
+.world.opened .stage {
+    transform:
+        translate(-50%, -48%)
+        scale(.84);
+}
+
+.envelope {
+    position: absolute;
+    left: 50%;
+    bottom: 20px;
+    width: min(500px, 82vw);
+    aspect-ratio: 1.55;
+    transform: translateX(-50%);
+    perspective: 1000px;
+}
+
+/* shadow under envelope */
+
+.envelope-shadow {
+    position: absolute;
+    left: 5%;
+    bottom: -18px;
+    width: 90%;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(56,72,59,.22);
+    filter: blur(13px);
+}
+
+/* back body */
+
+.env-back {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    border-radius: 8px;
+    background:
+        linear-gradient(135deg, #f5e6c8, #ead5ad);
+    box-shadow:
+        0 24px 45px rgba(53,60,46,.18),
+        inset 0 0 0 1px rgba(95,74,45,.12);
+}
+
+/* paper fibers */
+
+.env-back::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: .14;
+    background-image:
+        repeating-linear-gradient(
+            0deg,
+            rgba(100,70,35,.2) 0,
+            rgba(100,70,35,.2) 1px,
+            transparent 1px,
+            transparent 5px
+        );
+}
+
+/* lower triangular folds */
+
+.env-front {
+    position: absolute;
+    z-index: 7;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 76%;
+    overflow: hidden;
+    border-radius: 0 0 8px 8px;
+    background: #e9d2aa;
+    clip-path: polygon(
+        0 0,
+        50% 53%,
+        100% 0,
+        100% 100%,
+        0 100%
+    );
+    box-shadow:
+        inset 0 1px rgba(116,82,40,.13);
+}
+
+.env-front::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(
+            145deg,
+            transparent 49.7%,
+            rgba(126,91,51,.18) 50%,
+            transparent 50.4%
+        ),
+        linear-gradient(
+            215deg,
+            transparent 49.7%,
+            rgba(126,91,51,.18) 50%,
+            transparent 50.4%
+        );
+}
+
+/* flap */
+
+.flap {
+    position: absolute;
+    z-index: 9;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 72%;
+    transform-origin: top center;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    background:
+        linear-gradient(
+            135deg,
+            #f8e9ca,
+            #e9d2a8
+        );
+    box-shadow: 0 2px 3px rgba(100,70,40,.1);
+    transition:
+        transform 1s cubic-bezier(.2,.8,.2,1),
+        z-index 0s linear 1s;
+    backface-visibility: hidden;
+}
+
+.world.breaking .flap,
+.world.opened .flap {
+    transform: rotateX(180deg);
+    z-index: 4;
+}
+
+/* inside of flap */
+
+.flap::after {
+    content: "";
+    position: absolute;
+    left: 12%;
+    top: 8%;
+    width: 76%;
+    height: 70%;
+    background: rgba(255,250,237,.25);
+    clip-path: polygon(0 0,100% 0,50% 100%);
+}
+
+/* =========================================================
+   LETTER
+========================================================= */
+
+.letter {
+    position: absolute;
+    z-index: 5;
+    left: 50%;
+    bottom: 28px;
+    width: 88%;
+    height: 92%;
+    transform:
+        translateX(-50%)
+        translateY(45%);
+    padding: 42px 44px;
+    overflow: hidden;
+    border-radius: 3px;
+    background:
+        linear-gradient(
+            180deg,
+            #fffdf7,
+            #f9f1df
+        );
+    box-shadow:
+        0 15px 30px rgba(65,53,36,.22),
+        inset 0 0 0 1px rgba(115,91,53,.09);
+    opacity: 0;
+    transition:
+        transform 1.35s cubic-bezier(.17,.84,.24,1),
+        opacity .55s ease,
+        width 1s ease,
+        height 1s ease,
+        bottom 1s ease;
+}
+
+.world.opening .letter,
+.world.opened .letter {
+    opacity: 1;
+}
+
+.world.opening .letter {
+    transform:
+        translateX(-50%)
+        translateY(-12%);
+}
+
+.world.opened .letter {
+    z-index: 30;
+    bottom: -15px;
+    width: min(620px, 88vw);
+    height: min(760px, 78vh);
+    transform:
+        translateX(-50%)
+        translateY(0);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(100,90,70,.3) transparent;
+}
+
+.letter-inner {
+    min-height: 100%;
+}
+
+.letter-top {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.letter-flower {
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.letter-heading {
+    font-family: "Playfair Display", serif;
+    font-size: 25px;
+    color: #51473b;
+}
+
+.letter-rule {
+    width: 55px;
+    height: 1px;
+    margin: 15px auto 0;
+    background: #b6a68c;
+}
+
+.letter-content {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 16px;
+    line-height: 1.75;
+    color: #4d453c;
+}
+
+.letter-content p {
+    margin: 0 0 20px;
+}
+
+.letter-content .opening-line {
+    font-size: 18px;
+}
+
+.letter-content .closing {
+    margin-top: 28px;
+}
+
+.signature {
+    font-family: "Playfair Display", serif;
+    font-size: 21px;
+    text-align: right;
+    margin-top: 10px;
+}
+
+/* =========================================================
+   STAMP
+========================================================= */
+
+.stamp {
+    position: absolute;
+    z-index: 10;
+    top: 28px;
+    right: 30px;
+    width: 68px;
+    height: 78px;
+    padding: 5px;
+    background: #f7eee0;
+    transform: rotate(4deg);
+    box-shadow: 0 2px 4px rgba(80,60,30,.08);
+}
+
+.stamp-inner {
+    width: 100%;
+    height: 100%;
+    border: 1px dashed #ae9171;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #96765b;
+}
+
+.stamp-flower {
+    font-size: 22px;
+}
+
+.stamp-text {
+    font-size: 7px;
+    letter-spacing: .15em;
+    margin-top: 3px;
+}
+
+/* postmark */
+
+.postmark {
+    position: absolute;
+    z-index: 10;
+    top: 26px;
+    right: 112px;
+    width: 100px;
+    height: 55px;
+    color: rgba(100,72,51,.52);
+    transform: rotate(-8deg);
+}
+
+.postmark-circle {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 54px;
+    height: 54px;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+}
+
+.postmark-circle::after {
+    content: "50";
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-family: Georgia, serif;
+    font-size: 16px;
+}
+
+.postmark-lines {
+    position: absolute;
+    left: 55px;
+    top: 15px;
+    width: 45px;
+    height: 24px;
+    background:
+        repeating-linear-gradient(
+            0deg,
+            currentColor 0 1px,
+            transparent 1px 5px
+        );
+}
+
+/* address */
+
+.address {
+    position: absolute;
+    z-index: 10;
+    left: 14%;
+    top: 48%;
+    color: rgba(74,62,48,.62);
+}
+
+.address-small {
+    font-size: 9px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.address-name {
+    font-family: "Playfair Display", serif;
+    font-size: 27px;
+    letter-spacing: .08em;
+}
+
+.address-line {
+    margin-top: 9px;
+    width: 190px;
+    height: 1px;
+    background: rgba(85,67,47,.25);
+}
+
+.address-line.short {
+    width: 125px;
+    margin-top: 7px;
+}
+
+/* =========================================================
+   WAX SEAL
+========================================================= */
+
+.seal {
+    position: absolute;
+    z-index: 15;
+    left: 50%;
+    top: 57%;
+    width: 88px;
+    height: 88px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #bd7167,
+            #a44e47 48%,
+            #823d39 100%
+        );
+    box-shadow:
+        0 8px 12px rgba(69,45,40,.2),
+        inset 4px 5px 8px rgba(255,255,255,.12),
+        inset -6px -8px 12px rgba(65,25,25,.16);
+    transition:
+        transform .2s ease,
+        opacity .5s ease,
+        filter .5s ease;
+}
+
+.seal:hover {
+    transform: translate(-50%, -50%) scale(1.07) rotate(-2deg);
+}
+
+.seal:active {
+    transform: translate(-50%, -50%) scale(.96);
+}
+
+.seal::before {
+    content: "";
+    position: absolute;
+    inset: 12px;
+    border: 1px solid rgba(255,230,220,.28);
+    border-radius: 50%;
+}
+
+.seal-heart {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: rgba(255,238,228,.8);
+    font-size: 28px;
+    transform: translateY(-1px);
+}
+
+.seal-label {
+    position: absolute;
+    left: 50%;
+    top: calc(100% + 17px);
+    transform: translateX(-50%);
+    width: max-content;
+    color: #536254;
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition: opacity .3s ease;
+}
+
+.world.breaking .seal,
+.world.opened .seal {
+    pointer-events: none;
+    opacity: 0;
+    filter: blur(3px);
+    transform: translate(-50%, -50%) scale(1.45) rotate(18deg);
+}
+
+.world.breaking .seal-label,
+.world.opened .seal-label {
+    opacity: 0;
+}
+
+/* cracks */
+
+.crack {
+    position: absolute;
+    z-index: 20;
+    left: 50%;
+    top: 50%;
+    width: 2px;
+    height: 45px;
+    background: rgba(74,30,29,.7);
+    transform-origin: top;
+    opacity: 0;
+}
+
+.crack.one {
+    transform: translate(-50%, -50%) rotate(35deg);
+}
+
+.crack.two {
+    transform: translate(-50%, -50%) rotate(-48deg);
+}
+
+.crack.three {
+    height: 30px;
+    transform: translate(-50%, -50%) rotate(145deg);
+}
+
+.world.breaking .crack {
+    opacity: 1;
+    animation: crack .55s ease forwards;
+}
+
+@keyframes crack {
+    0% {
+        scale: .2;
+        opacity: 0;
+    }
+
+    40% {
+        scale: 1;
+        opacity: 1;
+    }
+
+    100% {
+        scale: 1.15;
+        opacity: 0;
+    }
+}
+
+/* =========================================================
+   INSTRUCTION
+========================================================= */
+
+.instruction {
+    position: absolute;
+    z-index: 12;
+    left: 50%;
+    bottom: 7%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: #536354;
+    font-size: 11px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    transition:
+        opacity .5s ease,
+        transform .5s ease;
+}
+
+.instruction::before {
+    content: "";
+    display: block;
+    width: 34px;
+    height: 1px;
+    margin: 0 auto 12px;
+    background: rgba(75,95,78,.35);
+}
+
+.world.breaking .instruction,
+.world.opened .instruction {
+    opacity: 0;
+    transform: translate(-50%, 10px);
+}
+
+/* =========================================================
+   RESET BUTTON
+========================================================= */
+
+.reset {
+    position: fixed;
+    z-index: 100;
+    right: 22px;
+    bottom: 18px;
+    border: 0;
+    background: rgba(255,250,239,.55);
+    color: #5b675b;
+    border-radius: 30px;
+    padding: 9px 14px;
+    font-family: inherit;
+    font-size: 10px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .4s ease;
+    backdrop-filter: blur(5px);
+}
+
+.world.opened .reset {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .world {
+        min-height: 100svh;
+    }
+
+    .intro {
+        top: 7%;
+    }
+
+    .intro-title {
+        font-size: 25px;
+    }
+
+    .stage {
+        top: 51%;
+        width: 96vw;
+        height: 410px;
+    }
+
+    .envelope {
+        width: 88vw;
+    }
+
+    .stamp {
+        top: 22px;
+        right: 20px;
+        width: 57px;
+        height: 65px;
+    }
+
+    .postmark {
+        right: 83px;
+        top: 22px;
+        transform: scale(.78) rotate(-8deg);
+        transform-origin: right top;
+    }
+
+    .address {
+        left: 11%;
+        top: 47%;
+    }
+
+    .address-name {
+        font-size: 23px;
+    }
+
+    .seal {
+        width: 76px;
+        height: 76px;
+    }
+
+    .letter {
+        width: 91%;
+        padding: 34px 25px;
+    }
+
+    .world.opened .letter {
+        width: 91vw;
+        height: 78vh;
+        padding: 30px 25px;
+    }
+
+    .letter-content {
+        font-size: 15px;
+        line-height: 1.72;
+    }
+
+    .letter-heading {
+        font-size: 22px;
+    }
+
+    .flower {
+        opacity: .8;
+    }
+
+    .f5,
+    .f6 {
+        display: none;
+    }
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="world" id="world">
+
+    <div class="vignette"></div>
+
+    <!-- =========================
+         BACKGROUND WORLD
+    ========================== -->
+
+    <div class="garden">
+
+        <div class="hill back"></div>
+        <div class="hill"></div>
+        <div class="grass"></div>
+
+        <!-- Flower 1 -->
+
+        <div class="flower f1">
+            <div class="stem"></div>
+            <div class="leaf one"></div>
+            <div class="leaf two"></div>
+
+            <div class="head">
+                <div class="petal p1"></div>
+                <div class="petal p2"></div>
+                <div class="petal p3"></div>
+                <div class="petal p4"></div>
+                <div class="center"></div>
+            </div>
+        </div>
+
+        <!-- Flower 2 -->
+
+        <div class="flower f2">
+            <div class="stem"></div>
+            <div class="leaf one"></div>
+            <div class="leaf two"></div>
+
+            <div class="head">
+                <div class="petal p1"></div>
+                <div class="petal p2"></div>
+                <div class="petal p3"></div>
+                <div class="petal p4"></div>
+                <div class="center"></div>
+            </div>
+        </div>
+
+        <!-- Flower 3 -->
+
+        <div class="flower f3">
+            <div class="stem"></div>
+            <div class="leaf one"></div>
+            <div class="leaf two"></div>
+
+            <div class="head">
+                <div class="petal p1"></div>
+                <div class="petal p2"></div>
+                <div class="petal p3"></div>
+                <div class="petal p4"></div>
+                <div class="center"></div>
+            </div>
+        </div>
+
+        <!-- Flower 4 -->
+
+        <div class="flower f4">
+            <div class="stem"></div>
+            <div class="leaf one"></div>
+            <div class="leaf two"></div>
+
+            <div class="head">
+                <div class="petal p1"></div>
+                <div class="petal p2"></div>
+                <div class="petal p3"></div>
+                <div class="petal p4"></div>
+                <div class="center"></div>
+            </div>
+        </div>
+
+        <div class="flower f5">
+            <div class="stem"></div>
+            <div class="leaf one"></div>
+
+            <div class="head">
+                <div class="petal p1"></div>
+                <div class="petal p2"></div>
+                <div class="petal p3"></div>
+                <div class="petal p4"></div>
+                <div class="center"></div>
+            </div>
+        </div>
+
+        <div class="flower f6">
+            <div class="stem"></div>
+            <div class="leaf one"></div>
+
+            <div class="head">
+                <div class="petal p1"></div>
+                <div class="petal p2"></div>
+                <div class="petal p3"></div>
+                <div class="petal p4"></div>
+                <div class="center"></div>
+            </div>
+        </div>
+
+        <!-- floating petals -->
+
+        <div class="petal-float pf1"></div>
+        <div class="petal-float pf2"></div>
+        <div class="petal-float pf3"></div>
+        <div class="petal-float pf4"></div>
+
+    </div>
+
+    <!-- =========================
+         INTRO
+    ========================== -->
+
+    <div class="intro">
+        <div class="intro-small">something for you</div>
+        <div class="intro-title">A little letter</div>
+    </div>
+
+
+    <!-- =========================
+         ENVELOPE + LETTER
+    ========================== -->
+
+    <main
+        class="stage"
+        id="stage"
+        aria-label="Sealed letter"
+    >
+
+        <div class="envelope">
+
+            <div class="envelope-shadow"></div>
+
+            <div class="env-back"></div>
+
+
+            <!-- LETTER IS PHYSICALLY INSIDE THE ENVELOPE -->
+
+            <article class="letter" id="letter">
+
+                <div class="letter-inner">
+
+                    <div class="letter-top">
+
+                        <div class="letter-flower">✿</div>
+
+                        <div class="letter-heading">
+                            A little something for you
+                        </div>
+
+                        <div class="letter-rule"></div>
+
+                    </div>
+
+
+                    <div class="letter-content">
+
+                        <p class="opening-line">
+                            Hi, Mina!
+                        </p>
+
+                        <p>
+                            I guess napagawa na naman ako ng letter.
+                            HAHAHA. Happy Wednesday, btw! I made this para
+                            may konting motivation ka bukas. Bait ko noh? 😌
+                        </p>
+
+                        <p>
+                            Anyway, gusto ko sana 'to sabihin sa'yo pag nasa
+                            call tayo, pero knowing me, baka maubusan ako ng
+                            lakas ng loob or bigla na lang akong tumawa
+                            HAHAHA. So dito ko na lang sasabihin.
+                        </p>
+
+                        <p>
+                            I don't really know how to word it without making
+                            this sound super serious, pero I just want you to
+                            know na... I really admire you.
+                        </p>
+
+                        <p>
+                            Like, genuinely.
+                        </p>
+
+                        <p>
+                            I admire how hard you work, kahit minsan halatang
+                            pagod ka na, and somehow you still manage to make
+                            things feel a little lighter!
+                        </p>
+
+                        <p>
+                            Kahit nung nag-trauma dump ka sa'kin HAHAHAHA,
+                            you still trusted me enough to actually tell me
+                            those things kahit sinabi mo pa na,
+                            "bala na kung nagkalat" 😭
+                        </p>
+
+                        <p>
+                            Sira talaga 'to si Mina eh HAHAHA.
+                        </p>
+
+                        <p>
+                            But seriously, I appreciate that. Ahh,
+                            nakakatuwa ka rin pakinggan minsan.
+                        </p>
+
+                        <p>
+                            And I guess habang tumatagal, may mga little
+                            things about you na napapansin ko more than I
+                            probably should. I don't know...
+                        </p>
+
+                        <p>
+                            Maybe that's why I wanted to make this.
+                        </p>
+
+                        <p>
+                            Hindi naman ako trying to make this super deep
+                            or anything. I just wanted you to know that
+                            there's someone here who notices how hard
+                            you're trying.
+                        </p>
+
+                        <p>
+                            So please, kahit sobrang busy mo, remember to
+                            rest din, okay? Or else lilipad ako diyan
+                            HAHAHA. EME. Sino ba ako tiba? Wala pa naman
+                            akong karapatan HAHAHA.
+                        </p>
+
+                        <p>
+                            Anyway...
+                        </p>
+
+                        <p>
+                            Happy 50th streak day? 😭
+                        </p>
+
+                        <p>
+                            I'm glad I got to know you. 🤍
+                        </p>
+
+                        <p class="closing">
+                            Take care of yourself, okay?
+                        </p>
+
+                        <div class="signature">
+                            — someone who thinks you're doing better
+                            than you realize
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- ENVELOPE FRONT -->
+
+            <div class="env-front"></div>
+
+
+            <!-- FLAP -->
+
+            <div class="flap"></div>
+
+
+            <!-- STAMP -->
+
+            <div class="stamp">
+
+                <div class="stamp-inner">
+
+                    <div class="stamp-flower">
+                        ✿
+                    </div>
+
+                    <div class="stamp-text">
+                        FOR YOU
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- POSTMARK -->
+
+            <div class="postmark">
+
+                <div class="postmark-circle"></div>
+
+                <div class="postmark-lines"></div>
+
+            </div>
+
+
+            <!-- ADDRESS -->
+
+            <div class="address">
+
+                <div class="address-small">
+                    special delivery
+                </div>
+
+                <div class="address-name">
+                    MINA
+                </div>
+
+                <div class="address-line"></div>
+
+                <div class="address-line short"></div>
+
+            </div>
+
+
+            <!-- WAX SEAL -->
+
+            <button
+                class="seal"
+                id="seal"
+                aria-label="Open the sealed letter"
+            >
+
+                <span class="seal-heart">
+                    ♥
+                </span>
+
+                <span class="crack one"></span>
+                <span class="crack two"></span>
+                <span class="crack three"></span>
+
+                <span class="seal-label">
+                    tap to open
+                </span>
+
+            </button>
+
+        </div>
+
+    </main>
+
+
+    <!-- INSTRUCTION -->
+
+    <div class="instruction">
+        tap the seal to open
+    </div>
+
+
+    <!-- RESET -->
+
+    <button class="reset" id="reset">
+        close letter
+    </button>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   BASIC ELEMENTS
+========================================================= */
+
+const world = document.getElementById("world");
+const seal = document.getElementById("seal");
+const reset = document.getElementById("reset");
+
+let opened = false;
+
+
+/* =========================================================
+   AMBIENT SOUND SYSTEM
+========================================================= */
+
+let audioCtx = null;
+let masterGain = null;
+let windGain = null;
+let windSource = null;
+let birdTimer = null;
+let soundEnabled = true;
+
+
+/* =========================================================
+   CREATE SOUND TOGGLE
+========================================================= */
+
+const soundButton = document.createElement("button");
+
+soundButton.innerHTML = "🔊";
+
+soundButton.setAttribute(
+    "aria-label",
+    "Mute sounds"
+);
+
+Object.assign(soundButton.style, {
+
+    position: "fixed",
+
+    right: "22px",
+
+    top: "20px",
+
+    zIndex: "200",
+
+    width: "40px",
+
+    height: "40px",
+
+    border: "0",
+
+    borderRadius: "50%",
+
+    background: "rgba(255,250,239,.65)",
+
+    backdropFilter: "blur(6px)",
+
+    color: "#536254",
+
+    fontSize: "17px",
+
+    cursor: "pointer",
+
+    boxShadow:
+        "0 4px 12px rgba(60,70,55,.08)",
+
+    transition:
+        "transform .2s ease, background .2s ease"
+
+});
+
+document.body.appendChild(soundButton);
+
+
+/* =========================================================
+   INITIALIZE AUDIO
+========================================================= */
+
+function startAmbience() {
+
+    if (!audioCtx) {
+
+        const AudioContext =
+            window.AudioContext ||
+            window.webkitAudioContext;
+
+        if (!AudioContext) {
+
+            console.log(
+                "Web Audio API not supported."
+            );
+
+            return;
+        }
+
+        audioCtx = new AudioContext();
+
+        masterGain =
+            audioCtx.createGain();
+
+        masterGain.gain.value =
+            soundEnabled ? 1 : 0;
+
+        masterGain.connect(
+            audioCtx.destination
+        );
+
+        createWind();
+    }
+
+    if (
+        audioCtx.state === "suspended"
+    ) {
+
+        audioCtx.resume();
+    }
+
+    scheduleBird();
+}
+
+
+/* =========================================================
+   WIND
+========================================================= */
+
+function createWind() {
+
+    const bufferSize =
+        audioCtx.sampleRate * 3;
+
+    const buffer =
+        audioCtx.createBuffer(
+            1,
+            bufferSize,
+            audioCtx.sampleRate
+        );
+
+    const data =
+        buffer.getChannelData(0);
+
+    for (
+        let i = 0;
+        i < bufferSize;
+        i++
+    ) {
+
+        data[i] =
+            (Math.random() * 2 - 1) *
+            0.45;
+    }
+
+
+    windSource =
+        audioCtx.createBufferSource();
+
+    windSource.buffer =
+        buffer;
+
+    windSource.loop =
+        true;
+
+
+    const lowpass =
+        audioCtx.createBiquadFilter();
+
+    lowpass.type =
+        "lowpass";
+
+    lowpass.frequency.value =
+        650;
+
+    lowpass.Q.value =
+        0.3;
+
+
+    windGain =
+        audioCtx.createGain();
+
+    windGain.gain.value =
+        0.035;
+
+
+    windSource
+        .connect(lowpass)
+        .connect(windGain)
+        .connect(masterGain);
+
+    windSource.start();
+
+
+    const breeze = () => {
+
+        if (
+            !audioCtx ||
+            !windGain
+        ) {
+            return;
+        }
+
+        const now =
+            audioCtx.currentTime;
+
+
+        const strength =
+            0.025 +
+            Math.random() * 0.025;
+
+
+        windGain.gain
+            .cancelScheduledValues(now);
+
+
+        windGain.gain
+            .linearRampToValueAtTime(
+                strength,
+                now +
+                    2 +
+                    Math.random() * 3
+            );
+
+
+        setTimeout(
+            breeze,
+            3500 +
+                Math.random() * 4000
+        );
+    };
+
+
+    breeze();
+}
+
+
+/* =========================================================
+   BIRD CHIRP
+========================================================= */
+
+function birdChirp() {
+
+    if (
+        !audioCtx ||
+        !soundEnabled ||
+        audioCtx.state !== "running"
+    ) {
+        return;
+    }
+
+
+    const now =
+        audioCtx.currentTime;
+
+
+    const startFreq =
+        1500 +
+        Math.random() * 700;
+
+
+    const endFreq =
+        2400 +
+        Math.random() * 1000;
+
+
+    const oscillator =
+        audioCtx.createOscillator();
+
+
+    const gain =
+        audioCtx.createGain();
+
+
+    oscillator.type =
+        "sine";
+
+
+    oscillator.frequency.setValueAtTime(
+        startFreq,
+        now
+    );
+
+
+    oscillator.frequency
+        .exponentialRampToValueAtTime(
+            endFreq,
+            now + 0.12
+        );
+
+
+    oscillator.frequency
+        .exponentialRampToValueAtTime(
+            startFreq * 0.85,
+            now + 0.25
+        );
+
+
+    gain.gain.setValueAtTime(
+        0,
+        now
+    );
+
+
+    gain.gain.linearRampToValueAtTime(
+        0.045,
+        now + 0.025
+    );
+
+
+    gain.gain
+        .exponentialRampToValueAtTime(
+            0.001,
+            now + 0.3
+        );
+
+
+    oscillator
+        .connect(gain)
+        .connect(masterGain);
+
+
+    oscillator.start(now);
+
+    oscillator.stop(
+        now + 0.32
+    );
+
+
+    if (
+        Math.random() > 0.58
+    ) {
+
+        setTimeout(
+            () => {
+
+                if (
+                    audioCtx &&
+                    soundEnabled
+                ) {
+
+                    birdChirp();
+                }
+
+            },
+            180 +
+                Math.random() * 180
+        );
+    }
+}
+
+
+/* =========================================================
+   RANDOM BIRD SCHEDULER
+========================================================= */
+
+function scheduleBird() {
+
+    clearTimeout(
+        birdTimer
+    );
+
+
+    const delay =
+        5000 +
+        Math.random() * 8000;
+
+
+    birdTimer =
+        setTimeout(
+            () => {
+
+                birdChirp();
+
+                scheduleBird();
+
+            },
+            delay
+        );
+}
+
+
+/* =========================================================
+   SOUND TOGGLE
+========================================================= */
+
+soundButton.addEventListener(
+    "click",
+    (event) => {
+
+        event.stopPropagation();
+
+
+        soundEnabled =
+            !soundEnabled;
+
+
+        soundButton.innerHTML =
+            soundEnabled
+                ? "🔊"
+                : "🔇";
+
+
+        soundButton.setAttribute(
+            "aria-label",
+            soundEnabled
+                ? "Mute sounds"
+                : "Turn sounds on"
+        );
+
+
+        if (
+            audioCtx &&
+            masterGain
+        ) {
+
+            const now =
+                audioCtx.currentTime;
+
+
+            masterGain.gain
+                .cancelScheduledValues(now);
+
+
+            masterGain.gain
+                .linearRampToValueAtTime(
+                    soundEnabled
+                        ? 1
+                        : 0,
+                    now + 0.35
+                );
+
+
+            if (
+                soundEnabled
+            ) {
+
+                scheduleBird();
+
+            } else {
+
+                clearTimeout(
+                    birdTimer
+                );
+            }
+        }
+    }
+);
+
+
+/* =========================================================
+   OPEN LETTER
+========================================================= */
+
+function openLetter() {
+
+    if (opened) {
+        return;
+    }
+
+
+    opened = true;
+
+
+    /*
+        Start ambience directly from
+        the user's seal click.
+
+        This avoids most browser
+        autoplay restrictions.
+    */
+
+    startAmbience();
+
+
+    /*
+        PHASE 1
+        Break wax seal.
+    */
+
+    world.classList.add(
+        "breaking"
+    );
+
+
+    /*
+        PHASE 2
+        Open envelope flap.
+    */
+
+    setTimeout(
+        () => {
+
+            world.classList.add(
+                "opening"
+            );
+
+        },
+        350
+    );
+
+
+    /*
+        PHASE 3
+        Letter rises out.
+    */
+
+    setTimeout(
+        () => {
+
+            world.classList.add(
+                "opened"
+            );
+
+        },
+        1250
+    );
+}
+
+
+/* =========================================================
+   CLICK
+========================================================= */
+
+seal.addEventListener(
+    "click",
+    openLetter
+);
+
+
+/* =========================================================
+   KEYBOARD
+========================================================= */
+
+seal.addEventListener(
+    "keydown",
+    (event) => {
+
+        if (
+            event.key === "Enter" ||
+            event.key === " "
+        ) {
+
+            event.preventDefault();
+
+            openLetter();
+        }
+    }
+);
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+reset.addEventListener(
+    "click",
+    () => {
+
+        opened = false;
+
+
+        world.classList.remove(
+            "breaking",
+            "opening",
+            "opened"
+        );
+
+
+        /*
+            Keep ambience running
+            if the user closes the letter.
+        */
+
+        if (
+            audioCtx &&
+            audioCtx.state === "suspended"
+        ) {
+
+            audioCtx.resume();
+        }
+    }
+);
+
+</script>
+
+</body>
+</html>
